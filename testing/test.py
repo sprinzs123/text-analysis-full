@@ -16,13 +16,13 @@ class MultipleTester:
         self.people_in_text = people_in_text
 
     # compare strings if they are matching from full text analyze
-    def full_check(self):
+    def check_full(self):
         test_results = self.full_object.get_all_people_objects()
         return test_results == self.correct_text
 
     # check if over plot was made if more than two people
-    # check if overall plot wasn't made if
-    def overall_check(self):
+    # check if overall plot wasn't made when there is only one person
+    def check_overall(self):
         people_found = len(self.full_object.get_all_people_objects())
         if people_found == 1 and self.people_in_text == 1:
             return True
@@ -33,6 +33,15 @@ class MultipleTester:
 
     def get_full_text(self):
         return self.full_object
+
+    # test ignoring people limit
+    def check_correct_count(self):
+        people_count = len(self.full_object.get_all_people_objects())
+        print(self.full_object.get_people_names())
+        return people_count <= self.full_object.get_limit()
+
+
+
 
     # create string so that can compare
     def to_string(self):
@@ -53,7 +62,6 @@ class MultipleTester:
             all_adverbs = json.dumps(person_words.get_adverbs())
             all_nouns = json.dumps(person_words.get_nouns())
             all_verbs = json.dumps(person_words.get_verbs())
-            speech.save()
 
 
 
