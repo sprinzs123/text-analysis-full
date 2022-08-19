@@ -1,6 +1,10 @@
 import test
 import json
 
+# global variables to keep error count
+single_person_error = 0
+multiple_person_error = 0
+
 # global variable to see if all the testes passed or not
 test_fail = False
 
@@ -19,40 +23,67 @@ with open('three_people_mixed.txt', encoding="utf8") as multiple_mixed:
     multiple_mixed = multiple_mixed.read()
 debate_three_people = multiple_mixed
 
-# files to compare to that have correct result
-with open('correct_one.json', encoding="utf8") as correct_one:
-    correct_one = correct_one.read()
-correct_one = correct_one
 
+# global variable for error checking
+error_found = False
 
-# inputs for creating test objects
+#inputs for creating test objects ###
 # text, ignore_people, limit, correct_text, people_in_text
-single_test = test.MultipleTester(one_person, "", 5, "", 1)
-
-first_person = single_test.get_full_text().get_all_people_objects()[0]
-
-# print(json.dumps(first_person.get_all_data()))
-# print("/n")
-# print(json.loads(correct_one))
-
-first_person_str = str(first_person.get_all_data())
-correct_one_person_len = len(first_person_str)
-
-# test to see if entire object was created correctly
-if correct_one_person_len == 3383:
-    print("PASS one person results")
-else:
-    print("FAIL one person results")
-
-
+ignore_people = ''
+limit = 5
+people_in_text = 1
+single_test = test.MultipleTester(one_person, ignore_people, limit,  people_in_text)
 
 # multiple people checks start here
-three_test = test.MultipleTester(multiple_people, "", 2, "", 3)
+ignore_people = ''
+limit = 5
+people_in_text = 1
+three_test = test.MultipleTester(one_person, ignore_people, limit,  people_in_text)
+
+##### test for single and multiple people #########
+# check both single and multiple people objects for correct number of words
+def word_check(people_object):
+    if people_object.check_word_count():
+        print("PASS........number of words")
+    else:
+        print("FAIL........number of words")
+        error_found = False
 
 
-def limit_check():
+def sentence_check(people_object):
+    if people_object.check_sentence_count():
+        print("PASS........number of sentences")
+    else:
+        print("FAIL........number of sentences")
+        error_found = False
 
-    print(three_test.check_correct_count())
+
+def count_check(people_object):
+    if people_object.check_coded_count():
+        print("PASS........number of sentences")
+    else:
+        print("FAIL........number of sentences")
+        error_found = False
 
 
-limit_check()
+# main functions that going to be called to check things
+def single_checker():
+    print('Start single person test')
+    word_check(single_test)
+    sentence_check(single_test)
+    count_check(single_test)
+
+
+def multiple_checker():
+    print('\n')
+    print('Start multiple person test')
+    word_check(three_test)
+    sentence_check(three_test)
+    count_check(three_test)
+    overall_check(three_test)
+
+
+
+# calling functions that call tests for person objects
+single_checker()
+multiple_checker()

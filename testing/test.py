@@ -9,39 +9,48 @@ from debate.news.make_data.main_sentiment import SentimentSpeech
 # create dummy objects that going to have all full object
 # pass the correct data into object to be compared to
 # paste text from multiple scores here and then compare result to that is meant to be correct answers
+# true if test pass, false if test fails
 class MultipleTester:
-    def __init__(self, text, ignore_people, limit, correct_text, people_in_text):
+    def __init__(self, text, ignore_people, limit, people_in_text):
         self.full_object = SentimentSpeech(text, ignore_people, limit)
-        self.correct_text = correct_text
         self.people_in_text = people_in_text
-
-    # compare strings if they are matching from full text analyze
-    def check_full(self):
-        test_results = self.full_object.get_all_people_objects()
-        return test_results == self.correct_text
-
-    # check if over plot was made if more than two people
-    # check if overall plot wasn't made when there is only one person
-    def check_overall(self):
-        people_found = len(self.full_object.get_all_people_objects())
-        if people_found == 1 and self.people_in_text == 1:
-            return True
-        # checking if overall line was created bc overall line is going to have one more Person object
-        elif people_found > 1 and (people_found == (self.people_in_text-1)):
-            return True
-        return False
+        self.limit = limit
 
     def get_full_text(self):
         return self.full_object
 
-    # test ignoring people limit
-    def check_correct_count(self):
-        people_count = len(self.full_object.get_all_people_objects())
-        print(self.full_object.get_people_names())
-        return people_count <= self.full_object.get_limit()
+    # test that provided number of people matches found number of people
+    def check_coded_count(self):
+        return len(self.full_object.get_all_people_objects()) == self.people_in_text
 
+    # test word correct word count
+    # how many words were created so can compare to the limit
+    # can be used for multiple and single people text
+    def check_word_count(self):
+        word_count = 0
+        for person in self.full_object.get_all_people_objects():
+            words_dic = person.get_person_words().get_all_words()
+            word_count += len(words_dic.get('nouns'))
+            word_count += len(words_dic.get('verbs'))
+            word_count += len(words_dic.get('adverb'))
+            word_count += len(words_dic.get('adjective'))
+        # get count all words and compare to correct word count
+        return word_count == len(self.full_object.get_people_names()) * 4 * self.limit
 
+    # check if sentences were created correctly
+    def check_sentence_count(self):
+        sentence_count = 0
+        for person in self.full_object.get_all_people_objects():
+            sentence_dic = person.get_person_sentiment().get_all_sentences()
+            sentence_count += len(sentence_dic.get('subjective'))
+            sentence_count += len(sentence_dic.get('objective'))
+            sentence_count += len(sentence_dic.get('positive'))
+            sentence_count += len(sentence_dic.get('negative'))
+        return sentence_count == len(self.full_object.get_people_names()) * 4 * self.limit
 
+    # check if overall line was created for graphs
+    def check_overall(self):
+        print(self.full_object.get_polarity_graph().)
 
     # create string so that can compare
     def to_string(self):
