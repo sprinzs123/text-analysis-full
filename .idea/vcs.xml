@@ -4,7 +4,5 @@
     <mapping directory="$PROJECT_DIR$/../bakery" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/debate" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/debate/speech-and-debate-sentiment" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/debate/speech-and-debate-sentiment/speech-and-debate-sentiment" vcs="Git" />
   </component>
 </project>

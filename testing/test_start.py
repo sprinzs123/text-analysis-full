@@ -47,7 +47,7 @@ def word_check(people_object):
         print("PASS........number of words")
     else:
         print("FAIL........number of words")
-        error_found = False
+        error_found = True
 
 
 def sentence_check(people_object):
@@ -55,7 +55,7 @@ def sentence_check(people_object):
         print("PASS........number of sentences")
     else:
         print("FAIL........number of sentences")
-        error_found = False
+        error_found = True
 
 
 def count_check(people_object):
@@ -63,7 +63,7 @@ def count_check(people_object):
         print("PASS........number of sentences")
     else:
         print("FAIL........number of sentences")
-        error_found = False
+        error_found = True
 
 
 # main functions that going to be called to check things
@@ -80,10 +80,13 @@ def multiple_checker():
     word_check(three_test)
     sentence_check(three_test)
     count_check(three_test)
-    overall_check(three_test)
-
 
 
 # calling functions that call tests for person objects
-single_checker()
-multiple_checker()
+# as well returning boolean to re
+def get_error_status():
+    single_checker()
+    multiple_checker()
+    return error_found
+
+get_error_status()

@@ -50,7 +50,7 @@ class MultipleTester:
 
     # check if overall line was created for graphs
     def check_overall(self):
-        print(self.full_object.get_polarity_graph().)
+        print(self.full_object.get_polarity_graph())
 
     # create string so that can compare
     def to_string(self):
